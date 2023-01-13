@@ -3,7 +3,7 @@ author: chtzvt
 description: Releases a multi-platform game on Steam
 branding:
   icon: 'send'  
-  color: 'black'
+  color: 'gray-dark'
 
 inputs:
   steam-totp-shared-secret: 
@@ -30,6 +30,7 @@ runs:
       with:
         path: builds/
     - name: Install libcurl 
+      shell: bash
       id: libcurl_install
       run: |
         sudo apt -y install libcurl4-openssl-dev
