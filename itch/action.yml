@@ -1,0 +1,65 @@
+name: "Release to Itch.io"
+author: chtzvt
+description: Releases a multi-platform game on Itch.io
+branding:
+  icon: 'send'  
+  color: 'red'
+
+inputs:
+  itch-game: 
+    description: "Your Itch.io game name"
+    required: true
+  itch-user:
+    description: "Your Itch.io username"
+    required: true 
+  itch-api-key: 
+    description: "Your Itch.io API key"
+    required: true 
+  version: 
+    description: "Published version, typically a release tag name"
+    required: true 
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download Game Build Artifacts
+      uses: actions/download-artifact@v3.0.2
+      with:
+        path: builds/
+    - name: Deploy Windows build to itch.io
+      uses: The-Water-Museum/butler-publish-itchio-action@v1.0.3
+      env:
+        BUTLER_CREDENTIALS: ${{ inputs.itch-api-key }}
+        CHANNEL: windows
+        ITCH_GAME: ${{ inputs.itch-game }} 
+        ITCH_USER: ${{ inputs.itch-user }}
+        PACKAGE: builds/build-Windows/Windows.zip
+        VERSION: ${{ inputs.version }}
+    - name: Deploy HTML5 build to itch.io
+      uses: The-Water-Museum/butler-publish-itchio-action@v1.0.3
+      env:
+        BUTLER_CREDENTIALS: ${{ inputs.itch-api-key }}
+        CHANNEL: html
+        ITCH_GAME: ${{ inputs.itch-game }} 
+        ITCH_USER: ${{ inputs.itch-user }}
+        PACKAGE: builds/build-HTML5/HTML5.zip
+        VERSION: ${{ inputs.version }}
+    - name: Deploy macOS build to itch.io
+      uses: The-Water-Museum/butler-publish-itchio-action@v1.0.3
+      env:
+        BUTLER_CREDENTIALS: ${{ inputs.itch-api-key }}
+        CHANNEL: osx
+        ITCH_GAME: ${{ inputs.itch-game }} 
+        ITCH_USER: ${{ inputs.itch-user }}
+        PACKAGE: builds/build-macOS/macOS.zip
+        VERSION: ${{ inputs.version }}
+    - name: Deploy Linux build to itch.io
+      uses: The-Water-Museum/butler-publish-itchio-action@v1.0.3
+      env:
+        BUTLER_CREDENTIALS: ${{ inputs.itch-api-key }}
+        CHANNEL: linux
+        ITCH_GAME: ${{ inputs.itch-game }} 
+        ITCH_USER: ${{ inputs.itch-user }}
+        PACKAGE: builds/build-Linux_X11/Linux_X11.zip
+        VERSION: ${{ inputs.version }}
+        
