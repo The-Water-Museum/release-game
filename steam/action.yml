@@ -1,0 +1,52 @@
+name: "Release to Steam"
+author: chtzvt
+description: Releases a multi-platform game on Steam
+branding:
+  icon: 'send'  
+  color: 'black'
+
+inputs:
+  steam-totp-shared-secret: 
+    description: "Your Steam TOTP shared secret"
+    required: true
+  steam-username:
+    description: "Your Steam username"
+    required: true 
+  steam-password: 
+    description: "Your Steam API key"
+    required: true 
+  steam-appid: 
+    description: "Published version, typically a release tag name"
+    required: true 
+  version: 
+    description: "Published version description, typically a release tag name"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download Game Build Artifacts
+      uses: actions/download-artifact@v3.0.2
+      with:
+        path: builds/
+    - name: Install libcurl 
+      id: libcurl_install
+      run: |
+        sudo apt -y install libcurl4-openssl-dev
+    - uses: The-Water-Museum/steam-totp@v1.0.3
+      name: Generate TOTP
+      id: steam-totp
+      with:
+        shared_secret: ${{ inputs.steam-totp-shared-secret }}
+    - uses: The-Water-Museum/steam-deploy@v1.3.0
+      with:
+        username: ${{ inputs.steam-username }}
+        password: ${{ inputs.steam-password }}
+        totp: ${{ steps.steam-totp.outputs.code }}
+        appId: ${{ inputs.steam-appid }} 
+        buildDescription: ${{ inputs.version }}
+        rootPath: builds
+        depot1Path: build-Windows
+        depot2Path: build-macOS
+        depot3Path: build-Linux_X11
+        releaseBranch: prerelease
