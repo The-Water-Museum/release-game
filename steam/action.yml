@@ -29,7 +29,7 @@ runs:
       shell: bash
       id: libcurl_install
       run: |
-        sudo apt -y install libcurl4-openssl-dev
+        sudo apt -y install libcurl4-openssl-dev libnss-wrapper libcurl4
     - name: Download Game Build Artifacts
       uses: actions/download-artifact@v3.0.2
       with:
