@@ -25,15 +25,30 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Download Game Build Artifacts
-      uses: actions/download-artifact@v3.0.2
-      with:
-        path: builds/
     - name: Install libcurl 
       shell: bash
       id: libcurl_install
       run: |
         sudo apt -y install libcurl4-openssl-dev
+    - name: Download Game Build Artifacts
+      uses: actions/download-artifact@v3.0.2
+      with:
+        path: builds/
+    - name: "Unpack artifacts for publishing"
+      shell: bash
+      run: |
+          mkdir -p build/StandaloneWindows64
+          mkdir -p build/StandaloneLinux64
+          mkdir -p build/StandaloneOSX
+
+          cp 'builds/build-Windows/Windows.zip' .
+          unzip Windows.zip -d builds/StandaloneWindows64
+
+          cp 'builds/build-Linux_X11/Linux_X11.zip' .
+          unzip lucid-creations-linux.zip -d builds/StandaloneLinux64
+
+          cp 'builds/build-macOS/macOS.zip' .
+          unzip lucid-creations-linux.zip -d builds/StandaloneOSX
     - uses: The-Water-Museum/steam-totp@v1.0.3
       name: Generate TOTP
       id: steam-totp
@@ -47,7 +62,7 @@ runs:
         appId: ${{ inputs.steam-appid }} 
         buildDescription: ${{ inputs.version }}
         rootPath: builds
-        depot1Path: build-Windows
-        depot2Path: build-macOS
-        depot3Path: build-Linux_X11
+        depot1Path: StandaloneWindows64
+        depot2Path: StandaloneOSX
+        depot3Path: StandaloneLinux64
         releaseBranch: prerelease
