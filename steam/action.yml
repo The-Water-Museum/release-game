@@ -45,10 +45,10 @@ runs:
           unzip Windows.zip -d builds/StandaloneWindows64
 
           cp 'builds/build-Linux_X11/Linux_X11.zip' .
-          unzip lucid-creations-linux.zip -d builds/StandaloneLinux64
+          unzip Linux_X11.zip -d builds/StandaloneLinux64
 
           cp 'builds/build-macOS/macOS.zip' .
-          unzip lucid-creations-linux.zip -d builds/StandaloneOSX
+          unzip macOS.zip -d builds/StandaloneOSX
     - uses: The-Water-Museum/steam-totp@v1.0.3
       name: Generate TOTP
       id: steam-totp
