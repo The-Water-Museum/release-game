@@ -37,9 +37,9 @@ runs:
     - name: "Unpack artifacts for publishing"
       shell: bash
       run: |
-          mkdir -p build/StandaloneWindows64
-          mkdir -p build/StandaloneLinux64
-          mkdir -p build/StandaloneOSX
+          mkdir -p builds/StandaloneWindows64
+          mkdir -p builds/StandaloneLinux64
+          mkdir -p builds/StandaloneOSX
 
           cp 'builds/build-Windows/Windows.zip' .
           unzip Windows.zip -d builds/StandaloneWindows64
