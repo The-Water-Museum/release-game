@@ -25,11 +25,11 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Install libcurl 
+    - name: Install Dependencies 
       shell: bash
       id: libcurl_install
       run: |
-        sudo apt -y install libcurl4-openssl-dev libnss-wrapper libcurl4
+        sudo apt -y install libcurl3 libcurl4:i386 lib32gcc-s1
     - name: Download Game Build Artifacts
       uses: actions/download-artifact@v3.0.2
       with:
