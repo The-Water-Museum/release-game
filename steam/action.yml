@@ -6,17 +6,14 @@ branding:
   color: 'gray-dark'
 
 inputs:
-  steam-totp-shared-secret: 
-    description: "Your Steam TOTP shared secret"
-    required: false
   steam-username:
     description: "Your Steam username"
     required: true 
   steam-password: 
-    description: "Your Steam API key"
+    description: "Your Steam password"
     required: true 
   steam-appid: 
-    description: "Published version, typically a release tag name"
+    description: "Steam app ID"
     required: true 
   version: 
     description: "Published version description, typically a release tag name"
@@ -34,11 +31,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Install Dependencies 
-      shell: bash
-      id: libcurl_install
-      run: |
-        sudo apt -y install libcurl4
     - name: Download Game Build Artifacts
       uses: actions/download-artifact@v3.0.2
       with:
@@ -62,12 +54,6 @@ runs:
           cp 'builds/build-macOS/macOS.zip' .
           unzip macOS.zip -d builds/StandaloneOSX
           mv builds/StandaloneOSX/*.app builds/StandaloneOSX/Game.app || true
-    - uses: The-Water-Museum/steam-totp@v1.0.3
-      if: inputs.steam-totp-shared-secret != ''
-      name: Generate TOTP
-      id: steam-totp
-      with:
-        shared_secret: ${{ inputs.steam-totp-shared-secret }}
     - uses: The-Water-Museum/steam-deploy@v1.3.0
       with:
         username: ${{ inputs.steam-username }}
@@ -75,7 +61,6 @@ runs:
         configVdf: ${{ inputs.configVdf }}
         ssfnFileName: ${{ inputs.ssfnFileName }}
         ssfnFileContents: ${{ inputs.ssfnFileContents }}
-        totp: ${{ steps.steam-totp.outputs.code }}
         appId: ${{ inputs.steam-appid }} 
         buildDescription: ${{ inputs.version }}
         rootPath: builds
