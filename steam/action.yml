@@ -52,16 +52,16 @@ runs:
 
           cp 'builds/build-Windows/Windows.zip' .
           unzip Windows.zip -d builds/StandaloneWindows64
-          mv builds/StandaloneWindows64/*.exe builds/StandaloneWindows64/Game.exe
+          mv builds/StandaloneWindows64/*.exe builds/StandaloneWindows64/Game.exe || true
 
           cp 'builds/build-Linux_X11/Linux_X11.zip' .
           unzip Linux_X11.zip -d builds/StandaloneLinux64
-          mv builds/StandaloneLinux64/*.x86_64 builds/StandaloneLinux64/Game.x86_64
+          mv builds/StandaloneLinux64/*.x86_64 builds/StandaloneLinux64/Game.x86_64 || true
 
 
           cp 'builds/build-macOS/macOS.zip' .
           unzip macOS.zip -d builds/StandaloneOSX
-          mv builds/StandaloneOSX/*.app builds/StandaloneOSX/Game.app
+          mv builds/StandaloneOSX/*.app builds/StandaloneOSX/Game.app || true
     - uses: The-Water-Museum/steam-totp@v1.0.3
       if: inputs.steam-totp-shared-secret != ''
       name: Generate TOTP
