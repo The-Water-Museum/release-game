@@ -50,7 +50,6 @@ runs:
           unzip Linux_X11.zip -d builds/StandaloneLinux64
           mv builds/StandaloneLinux64/*.x86_64 builds/StandaloneLinux64/Game.x86_64 || true
 
-
           cp 'builds/build-macOS/macOS.zip' .
           unzip macOS.zip -d builds/StandaloneOSX
           mv builds/StandaloneOSX/*.app builds/StandaloneOSX/Game.app || true
