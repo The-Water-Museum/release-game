@@ -8,7 +8,7 @@ branding:
 inputs:
   steam-totp-shared-secret: 
     description: "Your Steam TOTP shared secret"
-    required: true
+    required: false
   steam-username:
     description: "Your Steam username"
     required: true 
@@ -21,6 +21,15 @@ inputs:
   version: 
     description: "Published version description, typically a release tag name"
     required: true
+  configVdf:
+    required: false
+    description: 'The contents of STEAM_HOME/config/config.vdf. Required if `totp` is not set.'
+  ssfnFileName:
+    required: false
+    description: 'The basename of the STEAM_HOME/ssfn file. Required if `totp` is not set.'
+  ssfnFileContents:
+    required: false
+    description: 'The contents of the file at STEAM_HOME/ssfnFileName. Required if `totp` is not set.'
 
 runs:
   using: "composite"
@@ -43,13 +52,18 @@ runs:
 
           cp 'builds/build-Windows/Windows.zip' .
           unzip Windows.zip -d builds/StandaloneWindows64
+          mv builds/StandaloneWindows64/*.exe builds/StandaloneWindows64/Game.exe
 
           cp 'builds/build-Linux_X11/Linux_X11.zip' .
           unzip Linux_X11.zip -d builds/StandaloneLinux64
+          mv builds/StandaloneLinux64/*.x86_64 builds/StandaloneLinux64/Game.x86_64
+
 
           cp 'builds/build-macOS/macOS.zip' .
           unzip macOS.zip -d builds/StandaloneOSX
+          mv builds/StandaloneOSX/*.app builds/StandaloneOSX/Game.app
     - uses: The-Water-Museum/steam-totp@v1.0.3
+      if: inputs.steam-totp-shared-secret != ''
       name: Generate TOTP
       id: steam-totp
       with:
@@ -58,6 +72,9 @@ runs:
       with:
         username: ${{ inputs.steam-username }}
         password: ${{ inputs.steam-password }}
+        configVdf: ${{ inputs.configVdf }}
+        ssfnFileName: ${{ inputs.ssfnFileName }}
+        ssfnFileContents: ${{ inputs.ssfnFileContents }}
         totp: ${{ steps.steam-totp.outputs.code }}
         appId: ${{ inputs.steam-appid }} 
         buildDescription: ${{ inputs.version }}
