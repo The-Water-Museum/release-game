@@ -27,6 +27,9 @@ inputs:
   ssfnFileContents:
     required: false
     description: 'The contents of the file at STEAM_HOME/ssfnFileName. Required if `totp` is not set.'
+  firstDepotIdOverride:
+    required: false
+    description: 'An optional override to specify the ID of the first depot instead of using the app ID plus one.'
 
 runs:
   using: "composite"
@@ -61,6 +64,7 @@ runs:
         ssfnFileName: ${{ inputs.ssfnFileName }}
         ssfnFileContents: ${{ inputs.ssfnFileContents }}
         appId: ${{ inputs.steam-appid }} 
+        firstDepotIdOverride: ${{ inputs.firstDepotIdOverride }}
         buildDescription: ${{ inputs.version }}
         rootPath: builds
         depot1Path: StandaloneWindows64
