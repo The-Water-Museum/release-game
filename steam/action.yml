@@ -30,6 +30,9 @@ inputs:
   firstDepotIdOverride:
     required: false
     description: 'An optional override to specify the ID of the first depot instead of using the app ID plus one.'
+  releaseBranch:
+    required: false
+    description: 'The branch within steam that this build will be automatically put live on.'
 
 runs:
   using: "composite"
@@ -70,4 +73,4 @@ runs:
         depot1Path: StandaloneWindows64
         depot2Path: StandaloneOSX
         depot3Path: StandaloneLinux64
-        releaseBranch: prerelease
+        releaseBranch: ${{ inputs.releaseBranch }}
