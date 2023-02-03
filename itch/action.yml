@@ -36,12 +36,12 @@ runs:
     - name: Show Info
       shell: bash
       run: |
-        echo "Have Windows: ${{ steps.builds.has-windows }}" 
-        echo "Have Linux: ${{ steps.builds.has-linux }}" 
-        echo "Have macOS: ${{ steps.builds.has-osx }}" 
-        echo "Have HTML5: ${{ steps.builds.has-html5 }}" 
+        echo "Have Windows: ${{ steps.builds.outputs.has-windows }}" 
+        echo "Have Linux: ${{ steps.builds.outputs.has-linux }}" 
+        echo "Have macOS: ${{ steps.builds.outputs.has-osx }}" 
+        echo "Have HTML5: ${{ steps.builds.outputs.has-html5 }}" 
     - name: Deploy Windows build to itch.io
-      if: steps.builds.has-windows == 'true'
+      if: steps.builds.outputs.has-windows == 'true'
       uses: The-Water-Museum/butler-publish-itchio-action@v1.0.3
       env:
         BUTLER_CREDENTIALS: ${{ inputs.itch-api-key }}
@@ -51,7 +51,7 @@ runs:
         PACKAGE: builds/build-Windows/Windows.zip
         VERSION: ${{ inputs.version }}
     - name: Deploy HTML5 build to itch.io
-      if: steps.builds.has-html5 == 'true'
+      if: steps.builds.outputs.has-html5 == 'true'
       uses: The-Water-Museum/butler-publish-itchio-action@v1.0.3
       env:
         BUTLER_CREDENTIALS: ${{ inputs.itch-api-key }}
@@ -61,7 +61,7 @@ runs:
         PACKAGE: builds/build-HTML5/HTML5.zip
         VERSION: ${{ inputs.version }}
     - name: Deploy macOS build to itch.io
-      if: steps.builds.has-osx == 'true'
+      if: steps.builds.outputs.has-osx == 'true'
       uses: The-Water-Museum/butler-publish-itchio-action@v1.0.3
       env:
         BUTLER_CREDENTIALS: ${{ inputs.itch-api-key }}
@@ -71,7 +71,7 @@ runs:
         PACKAGE: builds/build-macOS/macOS.zip
         VERSION: ${{ inputs.version }}
     - name: Deploy Linux build to itch.io
-      if: steps.builds.has-linux == 'true'
+      if: steps.builds.outputs.has-linux == 'true'
       uses: The-Water-Museum/butler-publish-itchio-action@v1.0.3
       env:
         BUTLER_CREDENTIALS: ${{ inputs.itch-api-key }}
