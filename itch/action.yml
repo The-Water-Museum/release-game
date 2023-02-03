@@ -26,7 +26,15 @@ runs:
       uses: actions/download-artifact@v3.0.2
       with:
         path: builds/
+    - name: builds
+      shell: bash
+      run: |
+        echo "has-windows=$(test -f builds/build-Windows/Windows.zip && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "has-html5=$(test -f builds/build-HTML5/HTML5.zip && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "has-osx=$(test -f builds/build-macOS/macOS.zip && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "has-linux=$(test -f builds/build-Linux_X11/Linux_X11.zip && echo true || echo false)" >> $GITHUB_OUTPUT
     - name: Deploy Windows build to itch.io
+      if: ${{ steps.builds.has-windows == 'true' }}
       uses: The-Water-Museum/butler-publish-itchio-action@v1.0.3
       env:
         BUTLER_CREDENTIALS: ${{ inputs.itch-api-key }}
@@ -36,6 +44,7 @@ runs:
         PACKAGE: builds/build-Windows/Windows.zip
         VERSION: ${{ inputs.version }}
     - name: Deploy HTML5 build to itch.io
+      if: ${{ steps.builds.has-html5 == 'true' }}
       uses: The-Water-Museum/butler-publish-itchio-action@v1.0.3
       env:
         BUTLER_CREDENTIALS: ${{ inputs.itch-api-key }}
@@ -45,6 +54,7 @@ runs:
         PACKAGE: builds/build-HTML5/HTML5.zip
         VERSION: ${{ inputs.version }}
     - name: Deploy macOS build to itch.io
+      if: ${{ steps.builds.has-osx == 'true' }}
       uses: The-Water-Museum/butler-publish-itchio-action@v1.0.3
       env:
         BUTLER_CREDENTIALS: ${{ inputs.itch-api-key }}
@@ -54,6 +64,7 @@ runs:
         PACKAGE: builds/build-macOS/macOS.zip
         VERSION: ${{ inputs.version }}
     - name: Deploy Linux build to itch.io
+      if: ${{ steps.builds.has-linux == 'true' }}
       uses: The-Water-Museum/butler-publish-itchio-action@v1.0.3
       env:
         BUTLER_CREDENTIALS: ${{ inputs.itch-api-key }}
