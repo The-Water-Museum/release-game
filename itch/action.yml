@@ -29,10 +29,10 @@ runs:
     - name: builds
       shell: bash
       run: |
-        echo "has-windows=$(test -f builds/build-Windows/Windows.zip && echo true || echo false)" >> $GITHUB_OUTPUT
-        echo "has-html5=$(test -f builds/build-HTML5/HTML5.zip && echo true || echo false)" >> $GITHUB_OUTPUT
-        echo "has-osx=$(test -f builds/build-macOS/macOS.zip && echo true || echo false)" >> $GITHUB_OUTPUT
-        echo "has-linux=$(test -f builds/build-Linux_X11/Linux_X11.zip && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "has-windows=$(test -f builds/build-Windows/Windows.zip && echo true)" >> $GITHUB_OUTPUT
+        echo "has-html5=$(test -f builds/build-HTML5/HTML5.zip && echo true)" >> $GITHUB_OUTPUT
+        echo "has-osx=$(test -f builds/build-macOS/macOS.zip && echo true)" >> $GITHUB_OUTPUT
+        echo "has-linux=$(test -f builds/build-Linux_X11/Linux_X11.zip && echo true)" >> $GITHUB_OUTPUT
     - name: Show Info
       shell: bash
       run: |
