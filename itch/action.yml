@@ -27,6 +27,7 @@ runs:
       with:
         path: builds/
     - name: builds
+      id: builds
       shell: bash
       run: |
         echo "has-windows=$(test -f builds/build-Windows/Windows.zip && echo true)" >> $GITHUB_OUTPUT
